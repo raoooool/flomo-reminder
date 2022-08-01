@@ -1,5 +1,7 @@
 import md5 from "md5";
 import axios from "axios";
+import { random } from "lodash";
+import dayjs from "dayjs";
 
 type Data = {
   content: string;
@@ -15,11 +17,11 @@ type Data = {
   files: string[];
 };
 
+const SUCCESS_CODE = 0;
 const UPDATE_URL = "https://flomoapp.com/api/v1/memo/updated/";
-const salt = process.env.FLOMO_SALT;
-const authorization = process.env.FLOMO_AUTHORIZATION || "";
+const { PUSH_URL = "", FLOMO_SALT, FLOMO_AUTHORIZATION = "" } = process.env;
 
-if (!salt || !authorization) {
+if (!PUSH_URL || !FLOMO_SALT || !FLOMO_AUTHORIZATION) {
   throw new Error("no secrets.");
 }
 
@@ -44,7 +46,7 @@ class FlomoReminder {
       n += i + "=" + params[i] + "&";
     }
     n = n.substring(0, n.length - 1);
-    const sign = md5(n + salt);
+    const sign = md5(n + FLOMO_SALT);
 
     return { ...params, sign };
   }
@@ -54,12 +56,12 @@ class FlomoReminder {
       .get(UPDATE_URL, {
         params: this.getParams(),
         headers: {
-          authorization,
+          authorization: FLOMO_AUTHORIZATION,
         },
       })
       .then((resp) => {
         const data = resp.data;
-        if (data?.code !== 200) {
+        if (data?.code !== SUCCESS_CODE) {
           return Promise.reject(data);
         }
         return data;
@@ -80,13 +82,25 @@ class FlomoReminder {
     return result;
   }
 
-  async run() {}
+  async getLuckyMemo() {
+    const memos = await this.getMemos();
+    return memos[random(memos.length)];
+  }
+}
+
+function push(desp: string) {
+  axios.post(PUSH_URL, {
+    data: {
+      title: `${dayjs().format("YYYY-MM-DD HH:mm")}的 memo 提醒请查收！`,
+      desp,
+    },
+  });
 }
 
 async function main() {
   const flomoReminder = new FlomoReminder();
-  const memos = await flomoReminder.getMemos();
-  console.log("memos", memos);
+  const memo = await flomoReminder.getLuckyMemo();
+  push(memo);
 }
 
 main();

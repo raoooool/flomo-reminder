@@ -11,4 +11,5 @@ jobs:
       - env:
           FLOMO_SALT: ${{ secrets.FLOMO_SALT }}
           FLOMO_AUTHORIZATION: ${{ secrets.FLOMO_AUTHORIZATION }}
+          PUSH_URL: ${{ secrets.PUSH_URL }}
         run: npm start
