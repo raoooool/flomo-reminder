@@ -89,14 +89,15 @@ class FlomoReminder {
 }
 
 function push(desp: string) {
-  axios
-    .post(PUSH_URL, {
-      title: `${dayjs().format("YYYY-MM-DD HH:mm")}的 memo 提醒请查收！`,
+  axios(PUSH_URL, {
+    method: "POST",
+    params: {
+      title: `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`,
       desp,
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    },
+  }).catch((error) => {
+    console.error(error);
+  });
 }
 
 async function main() {
