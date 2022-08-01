@@ -1,5 +1,7 @@
 name: Flomo Reminder
-on: [push]
+on:
+  schedule:
+    - cron: "0 12,18 * * *"
 jobs:
   run_flomo_reminder:
     name: Run Flomo Reminder
