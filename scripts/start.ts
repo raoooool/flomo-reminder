@@ -19,9 +19,10 @@ type Data = {
 
 const SUCCESS_CODE = 0;
 const UPDATE_URL = "https://flomoapp.com/api/v1/memo/updated/";
-const { PUSH_URL = "", FLOMO_SALT, FLOMO_AUTHORIZATION = "" } = process.env;
+const SALT = "dbbc3dd73364b4084c3a69346e0ce2b2";
+const { PUSH_URL = "", FLOMO_AUTHORIZATION = "" } = process.env;
 
-if (!PUSH_URL || !FLOMO_SALT || !FLOMO_AUTHORIZATION) {
+if (!PUSH_URL || !FLOMO_AUTHORIZATION) {
   throw new Error("no secrets.");
 }
 
@@ -46,7 +47,7 @@ class FlomoReminder {
       n += i + "=" + params[i] + "&";
     }
     n = n.substring(0, n.length - 1);
-    const sign = md5(n + FLOMO_SALT);
+    const sign = md5(n + SALT);
 
     return { ...params, sign };
   }
