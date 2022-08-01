@@ -91,10 +91,8 @@ class FlomoReminder {
 function push(desp: string) {
   axios
     .post(PUSH_URL, {
-      data: {
-        title: `${dayjs().format("YYYY-MM-DD HH:mm")}的 memo 提醒请查收！`,
-        desp,
-      },
+      title: `${dayjs().format("YYYY-MM-DD HH:mm")}的 memo 提醒请查收！`,
+      desp,
     })
     .catch((error) => {
       console.error(error);
