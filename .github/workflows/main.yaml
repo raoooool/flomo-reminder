@@ -1,7 +1,8 @@
 name: Flomo Reminder
 on: [push]
 jobs:
-  Run Flomo Reminder:
+  run_flomo_reminder:
+    name: Run Flomo Reminder
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
