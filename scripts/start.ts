@@ -95,6 +95,7 @@ function push(desp: string) {
     params: {
       title: `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`,
       desp,
+      channel: "9|8"
     },
   }).catch((error) => {
     console.error(error);
