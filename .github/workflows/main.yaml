@@ -12,5 +12,6 @@ jobs:
       - run: npm install
       - env:
           FLOMO_AUTHORIZATION: ${{ secrets.FLOMO_AUTHORIZATION }}
-          PUSH_URL: ${{ secrets.PUSH_URL }}
+          SERVERJIANG_URL: ${{ secrets.SERVERJIANG_URL }}
+          PUSHDEER_KEY: ${{ secrets.PUSHDEER_KEY }}
         run: npm start

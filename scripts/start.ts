@@ -20,82 +20,95 @@ type Data = {
 const SUCCESS_CODE = 0;
 const UPDATE_URL = "https://flomoapp.com/api/v1/memo/updated/";
 const SALT = "dbbc3dd73364b4084c3a69346e0ce2b2";
-const { PUSH_URL = "", FLOMO_AUTHORIZATION = "" } = process.env;
+const PUSHDEER_URL = "https://api2.pushdeer.com/message/push";
+const {
+  SERVERJIANG_URL = "",
+  FLOMO_AUTHORIZATION = "",
+  PUSHDEER_KEY = "",
+} = process.env;
 
-if (!PUSH_URL || !FLOMO_AUTHORIZATION) {
+if (!SERVERJIANG_URL || !PUSHDEER_KEY || !FLOMO_AUTHORIZATION) {
   throw new Error("no secrets.");
 }
 
-class FlomoReminder {
-  getParams() {
-    function kSort(e: any) {
-      var t = Object.keys(e).sort(),
-        a: any = {};
-      for (var n in t) a[t[n]] = e[t[n]];
-      return a;
-    }
-    const params: { [key: string]: string } = kSort({
-      limit: "500",
-      tz: "8:0",
-      timestamp: new Date().getTime().toString().slice(0, 10),
-      api_key: "flomo_web",
-      app_version: "2.0",
-    });
-
-    let n = "";
-    for (let i in params) {
-      n += i + "=" + params[i] + "&";
-    }
-    n = n.substring(0, n.length - 1);
-    const sign = md5(n + SALT);
-
-    return { ...params, sign };
+function getParams() {
+  function kSort(e: any) {
+    var t = Object.keys(e).sort(),
+      a: any = {};
+    for (var n in t) a[t[n]] = e[t[n]];
+    return a;
   }
+  const params: { [key: string]: string } = kSort({
+    limit: "500",
+    tz: "8:0",
+    timestamp: new Date().getTime().toString().slice(0, 10),
+    api_key: "flomo_web",
+    app_version: "2.0",
+  });
 
-  async request() {
-    return axios
-      .get(UPDATE_URL, {
-        params: this.getParams(),
-        headers: {
-          authorization: FLOMO_AUTHORIZATION,
-        },
-      })
-      .then((resp) => {
-        const data = resp.data;
-        if (data?.code !== SUCCESS_CODE) {
-          return Promise.reject(data);
-        }
-        return data;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  let n = "";
+  for (let i in params) {
+    n += i + "=" + params[i] + "&";
   }
+  n = n.substring(0, n.length - 1);
+  const sign = md5(n + SALT);
 
-  async getMemos() {
-    const data: Data[] = (await this.request())?.data || [];
-    const result = data.map((item) => {
-      return item.content.replace(
-        new RegExp("<(S*?)[^>]*>.*?|<.*? />", "g"),
-        ""
-      );
-    });
-    return result;
-  }
-
-  async getLuckyMemo() {
-    const memos = await this.getMemos();
-    return memos[random(memos.length)];
-  }
+  return { ...params, sign };
 }
 
-function push(desp: string) {
-  axios(PUSH_URL, {
+async function request() {
+  return axios
+    .get(UPDATE_URL, {
+      params: getParams(),
+      headers: {
+        authorization: FLOMO_AUTHORIZATION,
+      },
+    })
+    .then((resp) => {
+      const data = resp.data;
+      if (data?.code !== SUCCESS_CODE) {
+        return Promise.reject(data);
+      }
+      return data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+async function getMemos() {
+  const data: Data[] = (await request())?.data || [];
+  const result = data.map((item) => {
+    return item.content.replace(new RegExp("<(S*?)[^>]*>.*?|<.*? />", "g"), "");
+  });
+  return result;
+}
+
+async function getLuckyMemo() {
+  const memos = await getMemos();
+  return memos[random(memos.length)];
+}
+
+function push(text: string) {
+  const title = `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`;
+  // server 酱
+  axios(SERVERJIANG_URL, {
     method: "POST",
     params: {
-      title: `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`,
-      desp,
-      channel: "9|8"
+      title,
+      desp: encodeURIComponent(text),
+      channel: "9|8",
+    },
+  }).catch((error) => {
+    console.error(error);
+  });
+  // pushdeer
+  axios(PUSHDEER_URL, {
+    method: "POST",
+    params: {
+      pushkey: PUSHDEER_KEY,
+      text: `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`,
+      desp: encodeURIComponent(text),
+      type: "markdown",
     },
   }).catch((error) => {
     console.error(error);
@@ -103,8 +116,7 @@ function push(desp: string) {
 }
 
 async function main() {
-  const flomoReminder = new FlomoReminder();
-  const memo = await flomoReminder.getLuckyMemo();
+  const memo = await getLuckyMemo();
   push(memo);
 }
 
