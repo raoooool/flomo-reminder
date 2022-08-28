@@ -95,7 +95,7 @@ function push(text: string) {
     method: "POST",
     params: {
       title,
-      desp: encodeURIComponent(text),
+      desp: text,
       channel: "9|8",
     },
   }).catch((error) => {
@@ -107,7 +107,7 @@ function push(text: string) {
     params: {
       pushkey: PUSHDEER_KEY,
       text: `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`,
-      desp: encodeURIComponent(text),
+      desp: text,
       type: "markdown",
     },
   }).catch((error) => {
