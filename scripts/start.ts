@@ -2,6 +2,11 @@ import md5 from "md5";
 import axios from "axios";
 import { random } from "lodash";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Shanghai");
 
 type Data = {
   content: string;
@@ -89,7 +94,9 @@ async function getLuckyMemo() {
 }
 
 function push(text: string) {
-  const title = `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`;
+  const title = `${dayjs()
+    .tz()
+    .format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`;
   // server 酱
   axios(SERVERJIANG_URL, {
     method: "POST",
@@ -106,7 +113,7 @@ function push(text: string) {
     method: "POST",
     params: {
       pushkey: PUSHDEER_KEY,
-      text: `${dayjs().format("YYYY-MM-DD HH:mm")} 的 memo 提醒请查收！`,
+      text: title,
       desp: text,
       type: "markdown",
     },
