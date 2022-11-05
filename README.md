@@ -18,6 +18,6 @@ FLOMO_AUTHORIZATION='xxx' // FLOMO 的登录凭证，可以在 flomo 网页端�
 ```
 
 Like this:
-![](https://pic1.imgdb.cn/item/6366727716f2c2beb1904caf.png)
+[![xXMNXd.md.png](https://s1.ax1x.com/2022/11/05/xXMNXd.md.png)](https://imgse.com/i/xXMNXd)
 
 Enjoy it！
