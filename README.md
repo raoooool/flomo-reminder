@@ -8,11 +8,16 @@
 
 ## 用法
 
-在 github setting 中配置 secrets 如下：
+首先，fork 代码部署到自己仓库。
+
+然后在 fork 的仓库的 github setting 中配置 secrets 如下：
 
 ```
 BARK_TOKEN='xxx' // Bark App 的 key
 FLOMO_AUTHORIZATION='xxx' // FLOMO 的登录凭证，可以在 flomo 网页端里的随便一个接口的请求头里获取，格式为 ‘Bear xxxx’
 ```
 
-fork 代码部署到自己仓库即可。
+Like this:
+![](https://pic1.imgdb.cn/item/6366727716f2c2beb1904caf.png)
+
+Enjoy it！
