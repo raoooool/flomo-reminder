@@ -19,9 +19,12 @@ async function main() {
   const memoService = new MemoService();
   const pushService = new PushService();
 
-  const memos = await apiService.request();
-  const luckMemo = memoService.getLucyMemo(memos);
-  pushService.push(luckMemo);
+  const memos = await apiService.getMemos();
+  const luckyMemo = memoService.getLuckyMemo(memos);
+
+  console.log("The lucky memo is: \r\n\r\n", luckyMemo, "\r\n");
+
+  pushService.push(luckyMemo);
 }
 
 main();

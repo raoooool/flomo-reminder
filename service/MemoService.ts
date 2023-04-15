@@ -9,7 +9,7 @@ export class MemoService {
     });
   }
 
-  getLucyMemo(memos: Memo[]) {
+  getLuckyMemo(memos: Memo[]) {
     return this.convertMemoToHtml(memos[random(memos.length)]);
   }
 }
