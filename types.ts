@@ -1,13 +1,13 @@
 export type Memo = {
   content: string;
+  created_at: string;
   creator_id: number;
+  deleted_at: number | null;
+  files: any[];
+  linked_count: number;
+  pin: number;
+  slug: string;
   source: string;
   tags: string[];
-  pin: number;
-  created_at: string;
   updated_at: string;
-  deleted_at: null;
-  slug: string;
-  linked_count: number;
-  files: string[];
 };
