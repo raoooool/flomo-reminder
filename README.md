@@ -1,23 +1,41 @@
 # Flomo Reminder
 
-基于 `github action` 的定时推送 memo 服务。
+基于 `github actions` 的定时推送 memo 服务，灵感来自 flomo `每日提醒` 功能。
 
-默认会在每天的 12:00、18:00 通过 `server 酱` 推送最近 `500` 条 memo 中的随机一条 memo 到 `Bark` 里。
+## 功能
 
-灵感来自 flomo 官方的 `每日提醒` 服务。
+- 在每天 `9:00`、`12:00`、`18:00` 进行推送
+- 推送支持 `Bark`
+- 支持自定义要推送的 memo 标签
 
 ## 用法
 
-首先，fork 代码部署到自己仓库。
+1. **fork** 此仓库。
+2. 在**自己的仓库**里，定位到 `Settings` -> `Security` -> `Secrets and variables` -> `Actions`
 
-然后在 fork 的仓库的 github setting 中配置 secrets 如下：
+![](https://p.ipic.vip/oygvav.png)
 
-```
-BARK_TOKEN='xxx' // Bark App 的 key
-FLOMO_AUTHORIZATION='xxx' // FLOMO 的登录凭证，可以在 flomo 网页端里的随便一个接口的请求头里获取，格式为 ‘Bear xxxx’
-```
+3. 在 `Secrets` 这一栏中，点击右边的按钮 `New repository secret`，添加如下参数
 
-Like this:
-[![xXMNXd.md.png](https://s1.ax1x.com/2022/11/05/xXMNXd.md.png)](https://imgse.com/i/xXMNXd)
+| 参数                | 说明                                                                                   | 示例                        | 必填 |
+| ------------------- | -------------------------------------------------------------------------------------- | --------------------------- | ---- |
+| FLOMO_AUTHORIZATION | 在 Web 端登录 flomo，打开开发者工具，在随便一个接口请求里复制 authorization 头的值即可 | Bearer 12345678 ｜ xxxxxxxx | ✅   |
+| BARK_TOKEN          | Bark 的 推送 token                                                                     | aBcDefg1234HijkLmn          | ✅   |
 
-Enjoy it！
+4. 在 `Variables` 栏中，点击按钮 `New repository variable`，添加如下参数
+
+| 参数      | 说明                                                                                    | 示例                         | 必填 |
+| --------- | --------------------------------------------------------------------------------------- | ---------------------------- | ---- |
+| PUSH_TAGS | 要推送的 tags，用**英文逗号**分隔。如果设置了「读书」，会推送「读书」标签下所有的子标签 | 学习/前端/知识体系,读书,名言 |      |
+
+## 更新
+
+定期拉取此仓库代码即可。
+
+## 反馈
+
+请直接提 `issue`，谢谢！
+
+## 感谢
+
+flomo
