@@ -1,7 +1,7 @@
 name: Flomo Reminder
 on:
   schedule:
-    - cron: "0 1,4,10 * * *"
+    - cron: ${{ vars.PUSH_CRON || "0 1,4,10 * * *" }}
 jobs:
   run_flomo_reminder:
     name: Run Flomo Reminder
