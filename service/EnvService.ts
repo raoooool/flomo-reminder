@@ -1,14 +1,12 @@
 class EnvService {
   envs = {
     FLOMO_AUTHORIZATION: process.env.FLOMO_AUTHORIZATION || "", // flomo jwt
-    BARK_TOKEN: process.env.BARK_TOKEN || "", // bark token
     PUSH_TAGS: process.env.PUSH_TAGS || "", // 需要推送的 tags，用逗号分割
+    BARK_TOKEN: process.env.BARK_TOKEN || "", // bark token
+    PUSHDEER_TOKEN: process.env.PUSHDEER_TOKEN || "", // push-deer token
   };
 
-  requiredEnvs: (keyof typeof this.envs)[] = [
-    "FLOMO_AUTHORIZATION",
-    "BARK_TOKEN",
-  ];
+  requiredEnvs: (keyof typeof this.envs)[] = ["FLOMO_AUTHORIZATION"];
 
   constructor() {
     const lackEnvs = (

@@ -8,18 +8,49 @@ import envService from "./EnvService";
 // dayjs.extend(timezone);
 // dayjs.tz.setDefault("Asia/Shanghai");
 
+interface Config {
+  url: string;
+  token: string;
+  request: {
+    method: "GET" | "POST";
+    getParams: (content: string) => Record<string, string>;
+  };
+}
+
 export class PushService {
-  private url = "https://api.day.app/push";
-
-  private token = envService.envs.BARK_TOKEN;
-
-  push(content = "") {
-    return axios(this.url, {
-      method: "POST",
-      data: {
-        body: content,
-        device_key: this.token,
+  private configs: Record<string, Config> = {
+    bark: {
+      url: "https://api.day.app/push",
+      token: envService.envs.BARK_TOKEN,
+      request: {
+        method: "POST",
+        getParams: (content) => ({
+          device_key: envService.envs.BARK_TOKEN,
+          body: content,
+        }),
       },
+    },
+    pushDeer: {
+      url: "https://api2.pushdeer.com/message/push",
+      token: envService.envs.PUSHDEER_TOKEN,
+      request: {
+        method: "GET",
+        getParams: (content) => ({
+          pushkey: envService.envs.PUSHDEER_TOKEN,
+          text: content,
+        }),
+      },
+    },
+  };
+
+  push = (content = "") => {
+    Object.values(this.configs).forEach((config) => {
+      if (!config.token) return;
+      axios({
+        url: config.url,
+        method: config.request.method,
+        params: config.request.getParams(content),
+      });
     });
-  }
+  };
 }

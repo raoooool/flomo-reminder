@@ -7,7 +7,7 @@
 ## 功能
 
 - 支持通过 cron 表达式配置推送时间，默认在每天 `9:00`、`12:00`、`18:00` 进行推送
-- 推送支持 `Bark`
+- 推送支持 [Bark](https://github.com/Finb/Bark) 和 [PushDeer](http://www.pushdeer.com)
 - 支持自定义要推送的 memo 标签
 
 ## 用法
@@ -18,14 +18,15 @@
 
 ![](https://p.ipic.vip/oygvav.png)
 
-3. 在 `Secrets` 这一栏中，点击右边的按钮 `New repository secret`，添加如下参数
+3. 在 `Secrets` 这一栏中，点击右边的按钮 `New repository secret`，添加如下表参数。如果配置了多个通道的 token，则会发送多个通道推送
 
 | 参数                | 说明                                                                                   | 示例                        | 必填 |
 | ------------------- | -------------------------------------------------------------------------------------- | --------------------------- | ---- |
 | FLOMO_AUTHORIZATION | 在 Web 端登录 flomo，打开开发者工具，在随便一个接口请求里复制 authorization 头的值即可 | Bearer 12345678 ｜ xxxxxxxx | ✅   |
-| BARK_TOKEN          | Bark 的 推送 token                                                                     | aBcDefg1234HijkLmn          | ✅   |
+| BARK_TOKEN          | Bark 的 推送 token，在 Bark app 中可以找到                                             | aBcDefg1234HijkLmn          |      |
+| PUSHDEER_TOKEN      | PushDeer 的 推送 token，在 PushDeer 设置中可以找到                                     | aBcDefg1234HijkLmn          |      |
 
-4. 在 `Variables` 栏中，点击按钮 `New repository variable`，添加如下参数
+1. 在 `Variables` 栏中，点击按钮 `New repository variable`，添加如下表参数
 
 | 参数      | 说明                                                                                                           | 示例                                            | 必填 |
 | --------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ---- |
