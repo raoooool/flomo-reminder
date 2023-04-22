@@ -1,4 +1,4 @@
-\*\*\*\*# Flomo Reminder
+# Flomo Reminder
 
 基于 `github actions` 的定时推送 memo 服务，灵感来自 flomo `每日提醒` 功能。
 
@@ -12,8 +12,9 @@
 
 ## 用法
 
-1. **fork** 此仓库。
-2. 在**自己的仓库**里，定位到 `Settings` -> `Security` -> `Secrets and variables` -> `Actions`
+1. **fork** 此仓库
+2. 如果要修改推送时间，在 `.github` -> `workflows` -> `main.yaml` 中编辑 `on:schedule:cron` 这一项的为合法的 cron 表达式即可，请关注[注意事项](#注意)
+3. 在**自己的 github 仓库**里，定位到 `Settings` -> `Security` -> `Secrets and variables` -> `Actions`
 
 ![](https://p.ipic.vip/oygvav.png)
 
@@ -56,7 +57,8 @@ yarn start
 
 ## 注意
 
-1. 由于 github 的 action 机制，推送时间不会完全准确。高峰时期实测大概会延迟 40-50 分钟推送，可以酌情考虑把设置推送时间比想要推送的时间稍微提前一些。
+1. 由于 github 的 action 机制，**推送时间不会完全准确**。高峰时期实测大概会延迟 40-50 分钟推送，可以酌情考虑把设置推送时间比想要推送的时间稍微提前一些。
+2. 推送时间的 CRON 表达式，**时间要减去时区偏差 8**，例如每天 `9、12、18` 点推送要写成 `"0 1,4,10 * * *"`。
 
 ## 反馈
 
