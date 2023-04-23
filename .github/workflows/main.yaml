@@ -13,5 +13,6 @@ jobs:
       - env:
           FLOMO_AUTHORIZATION: ${{ secrets.FLOMO_AUTHORIZATION }}
           BARK_TOKEN: ${{ secrets.BARK_TOKEN }}
+          PUSHDEER_TOKEN: ${{ secrets.PUSHDEER_TOKEN }}
           PUSH_TAGS: ${{ vars.PUSH_TAGS }}
         run: npm start
